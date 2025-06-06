@@ -1,0 +1,367 @@
+{
+	"info": {
+		"_postman_id": "855eea44-6378-4de9-b349-68f6a5750a65",
+		"name": "dmoney issues collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40132009",
+		"_collection_link": "https://nuzhat-7863.postman.co/workspace/8a6eea78-96ea-45a1-822e-1bbe0b9911bd/collection/40132009-855eea44-6378-4de9-b349-68f6a5750a65?action=share&source=collection_link&creator=40132009"
+	},
+	"item": [
+		{
+			"name": "Admin login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-AUTH-SECRET-KEY",
+						"value": "ROADTOSDET",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@roadtocareer.net\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dmoney.roadtocareer.net/user/login",
+					"protocol": "http",
+					"host": [
+						"dmoney",
+						"roadtocareer",
+						"net"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create customer",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const lodash = require('lodash');\r",
+							"const prefix = \"0129\";\r",
+							"\r",
+							"\r",
+							"const randomDigit = lodash.random(1000000, 9999999);  // 7-digit\r",
+							"const phoneNumber = prefix + randomDigit;\r",
+							"console.log(\"Phone:\", phoneNumber);\r",
+							"pm.collectionVariables.set(\"customer1phoneNumber\", phoneNumber);\r",
+							"\r",
+							"\r",
+							"const randomNid = lodash.random(1000000000, 9999999999); // 10-digit NID\r",
+							"console.log(\"NID:\", randomNid);\r",
+							"pm.collectionVariables.set(\"customer1Nid\", randomNid.toString());\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-AUTH-SECRET-KEY",
+						"value": "ROADTOSDET",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWVyIjoiYWRtaW5Acm9hZHRvY2FyZWVyLm5ldCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTc0OTE5MjQ1MywiZXhwIjoxNzQ5MTk2MDUzfQ.sJxGFgH6zXdKlWzgJCbFzrsLpEXvkt2ZNN07WRB4xvc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{$randomFullName}}\",\r\n  \"email\": \"{{$randomFirstName}}@test.com\",\r\n  \"phone_number\": \"{{customer1phoneNumber}}\",\r\n  \"role\": \"Customer1\",\r\n  \"password\": \"1234\",\r\n  \"nid\": \"{{customer1Nid}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://dmoney.roadtocareer.net/user/create",
+					"protocol": "http",
+					"host": [
+						"dmoney",
+						"roadtocareer",
+						"net"
+					],
+					"path": [
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user with NID >13 chars",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const lodash = require('lodash');\r",
+							"const prefix = \"0129\";\r",
+							"\r",
+							"\r",
+							"const randomDigit = lodash.random(1000000, 9999999);  // 7-digit\r",
+							"const phoneNumber = prefix + randomDigit;\r",
+							"console.log(\"Phone:\", phoneNumber);\r",
+							"pm.collectionVariables.set(\"customer1phoneNumber\", phoneNumber);\r",
+							"\r",
+							"\r",
+							"const randomNid = lodash.random(100000000000000, 999999999999999); // 10-digit NID\r",
+							"console.log(\"NID:\", randomNid);\r",
+							"pm.collectionVariables.set(\"customer1Nid\", randomNid.toString());\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-AUTH-SECRET-KEY",
+						"value": "ROADTOSDET",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWVyIjoiYWRtaW5Acm9hZHRvY2FyZWVyLm5ldCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTc0OTE5MjQ1MywiZXhwIjoxNzQ5MTk2MDUzfQ.sJxGFgH6zXdKlWzgJCbFzrsLpEXvkt2ZNN07WRB4xvc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{$randomFullName}}\",\r\n  \"email\": \"{{$randomFirstName}}@test.com\",\r\n  \"phone_number\": \"{{customer1phoneNumber}}\",\r\n  \"role\": \"Customer\",\r\n  \"password\": \"1234\",\r\n  \"nid\": \"{{customer1Nid}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://dmoney.roadtocareer.net/user/create",
+					"protocol": "http",
+					"host": [
+						"dmoney",
+						"roadtocareer",
+						"net"
+					],
+					"path": [
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user with missing NID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const lodash = require('lodash');\r",
+							"const prefix = \"0129\";\r",
+							"\r",
+							"\r",
+							"const randomDigit = lodash.random(1000000, 9999999);  // 7-digit\r",
+							"const phoneNumber = prefix + randomDigit;\r",
+							"console.log(\"Phone:\", phoneNumber);\r",
+							"pm.collectionVariables.set(\"customer1phoneNumber\", phoneNumber);\r",
+							"\r",
+							"\r",
+							"const randomNid = lodash.random(1000000000, 9999999999); // 10-digit NID\r",
+							"console.log(\"NID:\", randomNid);\r",
+							"pm.collectionVariables.set(\"customer1Nid\", randomNid.toString());\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-AUTH-SECRET-KEY",
+						"value": "ROADTOSDET",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWVyIjoiYWRtaW5Acm9hZHRvY2FyZWVyLm5ldCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTc0OTE5MjQ1MywiZXhwIjoxNzQ5MTk2MDUzfQ.sJxGFgH6zXdKlWzgJCbFzrsLpEXvkt2ZNN07WRB4xvc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{$randomFullName}}\",\r\n  \"email\": \"{{$randomFirstName}}@test.com\",\r\n  \"phone_number\": \"{{customer1phoneNumber}}\",\r\n  \"role\": \"Customer\",\r\n  \"password\": \"1234\"\r\n \r\n}"
+				},
+				"url": {
+					"raw": "http://dmoney.roadtocareer.net/user/create",
+					"protocol": "http",
+					"host": [
+						"dmoney",
+						"roadtocareer",
+						"net"
+					],
+					"path": [
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer to Customer cashout",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-AUTH-SECRET-KEY",
+						"value": "ROADTOSDET",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWVyIjoiYWRtaW5Acm9hZHRvY2FyZWVyLm5ldCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTc0OTE5MjQ1MywiZXhwIjoxNzQ5MTk2MDUzfQ.sJxGFgH6zXdKlWzgJCbFzrsLpEXvkt2ZNN07WRB4xvc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"from_account\": \"01296020251\",\r\n  \"to_account\": \"01294312446\",\r\n  \"amount\": 100,\r\n  \"reference\": \"Cash out\"\r\n}"
+				},
+				"url": {
+					"raw": "http://dmoney.roadtocareer.net/transaction/withdraw",
+					"protocol": "http",
+					"host": [
+						"dmoney",
+						"roadtocareer",
+						"net"
+					],
+					"path": [
+						"transaction",
+						"withdraw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit to non-existent account",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-AUTH-SECRET-KEY",
+						"value": "ROADTOSDET",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGlmaWVyIjoiYWRtaW5Acm9hZHRvY2FyZWVyLm5ldCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTc0OTE5Mzc3NSwiZXhwIjoxNzQ5MTk3Mzc1fQ.WLNRU9kiks8a4NcOIe1gD7t-dciVxLV66e0T5yBOB-g",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"from_account\": \"SYSTEM\",\r\n  \"to_account\": \"01999995678\",\r\n  \"amount\": 1000,\r\n  \"reference\": \"Initial float\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dmoney.roadtocareer.net/transaction/deposit",
+					"protocol": "http",
+					"host": [
+						"dmoney",
+						"roadtocareer",
+						"net"
+					],
+					"path": [
+						"transaction",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "customer1phoneNumber",
+			"value": ""
+		},
+		{
+			"key": "customer1Nid",
+			"value": ""
+		}
+	]
+}
